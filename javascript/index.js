@@ -5,7 +5,7 @@ let youtubeApiKey = "AIzaSyASDALBzbvmHgsnfC3wSOYg8ssJY5rIQ1E"; // Replace with y
 // Function to generate a random video link
 function generateVideoLink() {
     if (!videoGenerated) {
-        const keywords = ["Bully", "Jock", "Curious", "Bro", "Bad Boy", "Delinquent"];
+        const keywords = ["Bully", "Jock", "Curious", "Bro", "Bad Boy", "Delinquent", "Men", "Muscle", "Guys"];
         const keyword = keywords[Math.floor(Math.random() * keywords.length)];
         const query = "M4M " + keyword;
 
@@ -30,7 +30,7 @@ function generateVideoLink() {
 // Function to perform API request to search for videos
 function searchVideos(query, callback) {
     gapi.client.youtube.search.list({
-        part: "id",
+        part: "snippet", // Update part to "snippet"
         q: query,
         type: "video",
         maxResults: 50
