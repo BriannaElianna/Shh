@@ -1,55 +1,72 @@
 body {
-  background-color: #222;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  text-align: center;
+    background-color: #181818; /* YouTube's dark mode background color */
+    color: #FFFFFF; /* White text color */
+    font-family: Arial, sans-serif;
+}
+
+#resultContainer {
+    text-align: center;
+    padding: 20px;
+}
+
+#resultContainer a {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 20px;
+    text-decoration: none;
+    background-color: #FF0000; /* YouTube's red color */
+    color: #FFFFFF;
+    border-radius: 5px;
+}
+
+#resultContainer a:hover {
+    background-color: #CC0000; /* Darker red on hover */
+}
+
+#playerContainer {
+    width: 70%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    background-color: #1F1F1F; /* Dark gray background */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+#playerContainer iframe {
+    width: 100%;
+    height: 100%;
 }
 
 h1 {
-  padding: 20px;
+    text-align: center;
+    color: #FFFFFF; /* White header color */
+    margin-top: 50px;
 }
 
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #00aeef;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1F1F1F;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.loader {
-  border: 16px solid #f3f3f3;
-  border-top: 16px solid #3498db;
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-  margin: 0 auto;
+#generateButton {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: #FF0000;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.jokes {
-  margin-top: 50px;
-}
-
-#videoContainer {
-  width: 560px;
-  height: 315px;
-  margin: 0 auto;
-}
-
-#videoLink {
-  margin-top: 20px;
-}
-
-#generateNewButton {
-  margin-top: 20px;
+#generateButton:hover {
+    background-color: #CC0000;
 }
 

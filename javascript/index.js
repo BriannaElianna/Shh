@@ -1,81 +1,55 @@
-// Initialize variables
-let videoGenerated = false;
-let youtubeApiKey = "AIzaSyASDALBzbvmHgsnfC3wSOYg8ssJY5rIQ1E"; // Replace with your YouTube Data API key
+// Array to store chosen video IDs
+var chosenVideos = [];
 
-// Function to generate a random video link
-function generateVideoLink() {
-    if (!videoGenerated) {
-        const keywords = ["Bully", "Jock", "Curious", "Bro", "Bad Boy", "Delinquent", "Men", "Muscle", "Guys"];
-        const keyword = keywords[Math.floor(Math.random() * keywords.length)];
-        const query = "M4M " + keyword;
+// Function to search YouTube videos and select a random lesser-known video
+function searchAndSelectVideo() {
+    var searchTerm = 'M4M';
 
-        // Simulating loading time
-        showLoadingPage();
+    var searchUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&q=' + searchTerm + '&type=video&key=AIzaSyAkU3M6boVfkctrJ4IYBRmwVBhbIW-LQBc';
+    fetch(searchUrl)
+        .then(response => response.json())
+        .then(data => {
+            var filteredVideos = data.items.filter(video => {
+                var title = video.snippet.title.toLowerCase();
+                var keywords = ['bully', 'delinquent', 'jock', 'curious', 'nerd listener', 'bad boy', 'rival'];
+                return keywords.some(keyword => title.includes(keyword)) &&
+                    !title.includes('m4f') &&
+                    !title.includes('m4a') &&
+                    !chosenVideos.includes(video.id.videoId);
+            });
 
-        // Perform API request to search for videos
-        searchVideos(query, (videoId) => {
-            if (videoId) {
-                const videoLink = `https://www.youtube.com/watch?v=${videoId}`;
-                showVideoPreview(videoLink);
-                videoGenerated = true;
+            if (filteredVideos.length > 0) {
+                var randomIndex = Math.floor(Math.random() * filteredVideos.length);
+                var randomVideo = filteredVideos[randomIndex];
+                var videoId = randomVideo.id.videoId;
+                var videoTitle = randomVideo.snippet.title;
+                var randomLink = 'https://www.youtube.com/watch?v=' + videoId;
+
+                // Add chosen video ID to the list
+                chosenVideos.push(videoId);
+
+                var resultContainer = document.getElementById("resultContainer");
+                resultContainer.innerHTML = '<a href="' + randomLink + '" target="_blank">' + videoTitle + '</a>';
+                resultContainer.style.display = 'block';
+
+                var playerContainer = document.getElementById("playerContainer");
+                playerContainer.innerHTML = '<iframe id="player" type="text/html" src="https://www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe>';
+                playerContainer.style.display = 'block';
             } else {
-                // Handle case when no videos are found
-                alert("No videos found. Please try again.");
-                hideLoadingPage();
+                var resultContainer = document.getElementById("resultContainer");
+                resultContainer.innerHTML = 'No suitable videos found.';
+                resultContainer.style.display = 'block';
+
+                var playerContainer = document.getElementById("playerContainer");
+                playerContainer.innerHTML = '';
+                playerContainer.style.display = 'none';
             }
+        })
+        .catch(error => {
+            console.log('Error searching videos:', error);
         });
-    }
 }
 
-// Function to perform API request to search for videos
-function searchVideos(query, callback) {
-    gapi.client.youtube.search.list({
-        part: "snippet", // Update part to "snippet"
-        q: query,
-        type: "video",
-        maxResults: 50
-    }).then((response) => {
-        const items = response.result.items;
-        if (items && items.length > 0) {
-            const randomIndex = Math.floor(Math.random() * items.length);
-            const videoId = items[randomIndex].id.videoId;
-            callback(videoId);
-        } else {
-            callback(null);
-        }
-    }, (error) => {
-        console.error("Error searching videos:", error);
-        callback(null);
-    });
-}
-
-// Function to show the loading page and hide the video preview
-function showLoadingPage() {
-    document.getElementById("loading-page").style.display = "block";
-    document.getElementById("video-preview").style.display = "none";
-}
-
-// Function to show the video preview and hide the loading page
-function showVideoPreview(videoLink) {
-    document.getElementById("loading-page").style.display = "none";
-    document.getElementById("video-preview").style.display = "block";
-    document.getElementById("video-iframe").src = videoLink;
-    document.getElementById("video-link").textContent = videoLink;
-}
-
-// Event listener for "Generate New" button
-document.getElementById("generate-new").addEventListener("click", generateVideoLink);
-
-// Load the YouTube Data API client
-gapi.load("client", () => {
-    // Initialize the API client
-    gapi.client.init({
-        apiKey: youtubeApiKey,
-        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"]
-    }).then(() => {
-        // API client is initialized
-        generateVideoLink();
-    }, (error) => {
-        console.error("Error initializing API client:", error);
-    });
-});
+// Event listener for the generate button
+var generateButton = document.getElementById("generateButton");
+generateButton.addEventListener("click", searchAndSelectVideo);
