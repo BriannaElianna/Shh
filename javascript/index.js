@@ -5,7 +5,7 @@ var chosenVideos = [];
 function searchAndSelectVideo() {
     var searchTerm = 'M4M';
 
-    var searchUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&q=' + searchTerm + '&type=video&key=AIzaSyAkU3M6boVfkctrJ4IYBRmwVBhbIW-LQBc';
+    var searchUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=100&q=' + searchTerm + '&type=video&key=AIzaSyCySlpBN-IG2sWZ98BZ5SxMdPDiNl_kuHY';
     fetch(searchUrl)
         .then(response => response.json())
         .then(data => {
